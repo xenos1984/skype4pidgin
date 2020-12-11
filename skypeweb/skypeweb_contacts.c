@@ -191,7 +191,7 @@ skypeweb_got_imagemessage(PurpleHttpConnection *http_conn, PurpleHttpResponse *r
 void
 skypeweb_download_uri_to_conv(SkypeWebAccount *sa, const gchar *uri, PurpleConversation *conv, time_t ts, const gchar* from)
 {
-	gchar *url, *text;
+	gchar *url;
 	PurpleHttpRequest *request;
 
 	if (purple_strequal(purple_core_get_ui(), "BitlBee")) {
@@ -216,11 +216,9 @@ skypeweb_download_uri_to_conv(SkypeWebAccount *sa, const gchar *uri, PurpleConve
 	purple_http_request_unref(request);
 
 	url = purple_strreplace(uri, "imgt1", "imgpsh_fullsize");
-	text = g_strdup_printf("<a href=\"%s\">Click here to view full version</a>", url);
-	purple_conversation_write_img_message(conv, from, text, 0, ts);
+	skypeweb_present_uri_as_filetransfer(sa, url, from);
 
 	g_free(url);
-	g_free(text);
 }
 
 void
